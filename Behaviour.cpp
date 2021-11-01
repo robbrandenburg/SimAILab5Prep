@@ -32,18 +32,28 @@ void PathFollowingBehaviour::Enter() {
 }
 
 glm::vec2 PathFollowingBehaviour::Execute() {
-	glm::vec2 closestPathNode = NULL;
-	float closestDist = 0;
-	for (glm::vec2 pathNode : this->PathNodes()) {
-		float pathDist = (pathNode - this->position).Length2;
-		if (closestPathNode == NULL || pathDist < closestDist) {
-			closestPathNode = pathNode;
-			closestDist = pathDist;
+	
+	if (this->CurrentPathNode != NULL) {
+		//TODO: this assumes linked list path node structure.
+	//		if we don't have this, need a more sophisticated way to know the "next" node
+		glm::vec2 targetVec = (this->CurrentPathNode->NextNode->position() - this->position);
+		return targetVec;
+	}
+	else {
+		glm::vec2 closestPathNode = NULL;
+		float closestDist = 0;
+		for (glm::vec2 pathNode : this->PathNodes()) {
+			float pathDist = (pathNode - this->position).Length2;
+			if (closestPathNode == NULL || pathDist < closestDist) {
+				closestPathNode = pathNode;
+				closestDist = pathDist;
+			}
 		}
+		if (closestPathNode == NULL) {
+			return glm::vec2.VecZero;
+		}
+		glm::vec2 targetVec = (ClosestPathNode - this->position);
+		return targetVec;
 	}
-	if (closestPathNode == NULL) {
-		return glm::vec2.VecZero;
-	}
-	glm::vec2 targetVec = (ClosestPathNode - this->position);
-	return targetVec;
+	
 }
